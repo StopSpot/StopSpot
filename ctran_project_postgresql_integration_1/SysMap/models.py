@@ -1,0 +1,32 @@
+from django.db import models
+
+# Create your models here.
+
+class stop_instance(models.Model):
+    service_date: models.DateField()
+    vehicle_number: models.IntegerField()
+    leave_time: models.IntegerField()
+    train: models.IntegerField()
+    badge: models.IntegerField()
+    route_number: models.IntegerField()
+    direction: models.IntegerField()
+    service_key: models.CharField(max_length=10)
+    trip_number: models.IntegerField()
+    stop_time: models.IntegerField()
+    arrive_time: models.IntegerField()
+    dwell: models.IntegerField()
+    location_id: models.IntegerField()
+    door: models.IntegerField()
+    life: models.IntegerField()
+    ons: models.IntegerField()
+    offs: models.IntegerField()
+    estimated_load: models.IntegerField()
+    maximum_speed: models.IntegerField()
+    train_mileage: models.DecimalField(max_digits=7,decimal_places=7)
+    pattern_distance: models.DecimalField(max_digits=7,decimal_places=7)
+    location_distance: models.DecimalField(max_digits=7,decimal_places=7)
+    x_coordinate: models.DecimalField(max_digits=7,decimal_places=7)
+    y_coordinate: models.DecimalField(max_digits=7,decimal_places=7)
+    data_source: models.IntegerField()
+    schedule_status: models.IntegerField()
+    trip_id: models.IntegerField()
