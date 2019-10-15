@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'leaflet',
+    'django.contrib.gis',
     'SysMap.apps.SysmapConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -79,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'SysMap',
         'USER': 'postgres',
-        'PASSWORD': 'Dymanic1-1',
+        'PASSWORD': '',
         'HOST': 'localhost'
     }
 }

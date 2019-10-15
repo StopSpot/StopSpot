@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import bus_stop
 
 posts = [
     {
@@ -17,12 +18,21 @@ posts = [
 
 
 def home(request):
+    bus_stops = bus_stop.objects.all()
     context = {
         'posts': posts
     }
-    return render(request, 'SysMap/home.html', context)
+    context['bus_stops'] = bus_stops 
+    return render(request, 'SysMap/home.html', context, bus_stops)
 
 
 def about(request):
     return render(request, 'SysMap/about.html', {'title': 'About'})
+
+def single_stop(request, lat, long):
+    context = {
+        'lat' : lat,
+        'long' : long,
+    }
+    return render(request, 'SysMap/single_stop.html', context )
 

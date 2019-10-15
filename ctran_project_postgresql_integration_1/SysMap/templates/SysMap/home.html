@@ -1,5 +1,16 @@
 {% extends "SysMap/base.html" %}
 {% block content %}
+    {% load leaflet_tags %}
+   
+    <head>
+    {% leaflet_css %}
+    {% leaflet_js %}
+   
+    </head>
+
+
+      
+    
     {% for post in posts %}
         <article class="media content-section">
           <div class="media-body">
@@ -12,4 +23,32 @@
           </div>
         </article>
     {% endfor %}
+
+   
+    
+
+  <body>{% leaflet_map "system_map" callback="map_init" %}
+  
+    <script>
+          function map_init(map, options){
+            {% for stop in bus_stops %} 
+              var lat = "{{stop.stop_lat}}";
+              var long ="{{stop.stop_lon}}";
+              L.marker([lat,long]).addTo(map).on("dblclick", markerClick);
+            {% endfor %}
+           map.setView([lat, long], 12);
+          }
+
+          function markerClick(e){
+          var lat = this.options.lat;
+          var long = this.options.long;
+          var url = "{% url 'SysMap-single_stop' lat=1 long=2 %}";
+          console.log("hey");
+          document.location.href = url.replace("1", "-122.3");
+        }
+    </script>
+</body>
 {% endblock content %}
+
+
+
