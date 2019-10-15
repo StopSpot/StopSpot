@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.gis.db import models as geomodels
 
 # Create your models here.
 
@@ -30,3 +31,23 @@ class stop_instance(models.Model):
     data_source: models.IntegerField()
     schedule_status: models.IntegerField()
     trip_id: models.IntegerField()
+
+
+class bus_stop(models.Model):
+    stop_id= models.IntegerField(primary_key=True,default=-1)
+    stop_code= models.IntegerField(default=-1)
+    stop_name= models.CharField(max_length=100,default='none provided')
+    stop_desc= models.CharField(max_length=100,default='none provided')
+    stop_lat= models.DecimalField(max_digits=11,decimal_places=8)
+    stop_lon= models.DecimalField(max_digits=11,decimal_places=8)
+    zone_id= models.IntegerField(default=-1)
+    stop_url= models.CharField(max_length=100,default='none provided')
+    location_type= models.IntegerField(default=-1)
+    parent_station= models.CharField(max_length=100,default='none provided')
+    stop_timezone= models.CharField(max_length=100,default='none provided')
+    wheelchair_boarding= models.IntegerField(default=-1)
+
+    class Meta:
+        verbose_name_plural = 'bus_stops'
+
+
