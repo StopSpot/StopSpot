@@ -4,10 +4,10 @@ from django.contrib.gis.db import models as geomodels
 # Create your models here.
 
 class stop_instance(models.Model):
-    service_date: models.DateField()
-    vehicle_number: models.IntegerField()
-    leave_time: models.IntegerField()
-    train: models.IntegerField()
+    service_date= models.DateField()
+    vehicle_number= models.IntegerField()
+    leave_time= models.IntegerField()
+    train= models.IntegerField()
     badge: models.IntegerField()
     route_number: models.IntegerField()
     direction: models.IntegerField()
