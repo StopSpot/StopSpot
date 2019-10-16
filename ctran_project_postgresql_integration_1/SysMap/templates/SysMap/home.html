@@ -29,20 +29,28 @@
   <body>{% leaflet_map "system_map" callback="map_init" %}
   
     <script>
-          //This function initalizes the map with all stops from bus_stop table
-          function map_init(map, options){
-            {% for stop in bus_stops %} 
-              var lat = "{{stop.stop_lat}}";
-              var long ="{{stop.stop_lon}}";
-              L.marker([lat,long]).addTo(map)
-              //.bindPopup('<b>'+ "{{stop.stop_id}}" + '</b><br/>' + "{{stop.stop_name}}").openPopup()
-              .on("dblclick", markerClick);
-            {% endfor %}
-           map.setView([45.656, -122.584], 15);
-          }
 
-          //This function get called when double clicking a marker. It then passes the marker's coords to the single_stop page
-          function markerClick(e){
+      customerMarker = L.marker.extend({
+        options: {
+          route: "custom data"
+        }
+      })
+      //This function initalizes the map with all stops from bus_stop table
+      function map_init(map, options){
+        {% for stop in bus_stops %} 
+          var lat = "{{stop.stop_lat}}";
+          var long ="{{stop.stop_lon}}";
+          L.marker([lat,long]).addTo(map)
+          //.bindPopup('<b>'+ "{{stop.stop_id}}" + '</b><br/>' + "{{stop.stop_name}}").openPopup()
+          .on("dblclick click", markerEvent)
+          //.on("click", markerClick);
+        {% endfor %}
+        map.setView([45.656, -122.584], 15);
+      }
+
+      //This function get called when double clicking a marker. It then passes the marker's coords to the single_stop page
+      function markerEvent(e){
+        if (e.type == "dblclick"){
           var coords = e.latlng;
           var lat = coords.lat;
           var long = coords.lng;
@@ -58,6 +66,10 @@
             return stopObj[matched];
           });
         }
+        else{
+
+        }
+      }
     </script>
 </body>
 {% endblock content %}
