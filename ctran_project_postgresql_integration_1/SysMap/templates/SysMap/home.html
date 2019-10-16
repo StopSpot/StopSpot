@@ -38,7 +38,7 @@
               //.bindPopup('<b>'+ "{{stop.stop_id}}" + '</b><br/>' + "{{stop.stop_name}}").openPopup()
               .on("dblclick", markerClick);
             {% endfor %}
-           map.setView([lat, long], 12);
+           map.setView([45.656, -122.584], 15);
           }
 
           //This function get called when double clicking a marker. It then passes the marker's coords to the single_stop page
