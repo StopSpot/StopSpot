@@ -29,21 +29,34 @@
   <body>{% leaflet_map "system_map" callback="map_init" %}
   
     <script>
+          //This function initalizes the map with all stops from bus_stop table
           function map_init(map, options){
             {% for stop in bus_stops %} 
               var lat = "{{stop.stop_lat}}";
               var long ="{{stop.stop_lon}}";
-              L.marker([lat,long]).addTo(map).on("dblclick", markerClick);
+              L.marker([lat,long]).addTo(map)
+              //.bindPopup('<b>'+ "{{stop.stop_id}}" + '</b><br/>' + "{{stop.stop_name}}").openPopup()
+              .on("dblclick", markerClick);
             {% endfor %}
            map.setView([lat, long], 12);
           }
 
+          //This function get called when double clicking a marker. It then passes the marker's coords to the single_stop page
           function markerClick(e){
-          var lat = this.options.lat;
-          var long = this.options.long;
+          var coords = e.latlng;
+          var lat = coords.lat;
+          var long = coords.lng;
           var url = "{% url 'SysMap-single_stop' lat=1 long=2 %}";
-          console.log("hey");
-          document.location.href = url.replace("1", "-122.3");
+          
+          var stopObj = {
+            1: lat,
+            2: long
+          }
+
+          
+          document.location.href = url.replace(/1|2/gi, function(matched){
+            return stopObj[matched];
+          });
         }
     </script>
 </body>
