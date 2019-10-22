@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'SysMap',
         'USER': 'postgres',
-        'PASSWORD': '6cs0zi151!',
+        'PASSWORD': '',
         'HOST': 'localhost'
     }
 }
@@ -124,3 +124,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+#Django-leaflet settings go here
+LEAFLET_CONFIG = {
+    'ATTRIBUTION_PREFIX': 'Powered by django-leaflet',
+    'SCALE': 'imperial',
+    #removes button that shows world map
+    'RESET_VIEW': False'
+
+}
