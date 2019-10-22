@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'SysMap',
         'USER': 'postgres',
-        'PASSWORD': '',
+        'PASSWORD': 'put password here',
         'HOST': 'localhost'
     }
 }
