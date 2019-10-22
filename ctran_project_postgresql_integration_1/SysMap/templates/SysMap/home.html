@@ -1,10 +1,13 @@
 {% extends "SysMap/base.html" %}
 {% block content %}
     {% load leaflet_tags %}
+    {% load static %}
+
    
     <head>
     {% leaflet_css %}
     {% leaflet_js %}
+
     </head>
 
 
@@ -30,20 +33,38 @@
   
     <script>
 
-      customerMarker = L.marker.extend({
-        options: {
-          route: "custom data"
-        }
-      })
+      
+      var customIcon = L.Icon.extend({
+          options: {
+            iconSize:     [38, 95],
+            shadowSize:   [50, 64],
+            iconAnchor:   [22, 94],
+            shadowAnchor: [4, 62],
+            popupAnchor:  [-3, -76]
+          }
+      });
+
+      //This is how to create custom marker and point it at static files. 
+      var orcIcon = new customIcon({iconUrl: "{% static 'img/orc.jpg' %}"});
+      
       //This function initalizes the map with all stops from bus_stop table
       function map_init(map, options){
         {% for stop in bus_stops %} 
           var lat = "{{stop.stop_lat}}";
           var long ="{{stop.stop_lon}}";
-          L.marker([lat,long]).addTo(map)
-          //.bindPopup('<b>'+ "{{stop.stop_id}}" + '</b><br/>' + "{{stop.stop_name}}").openPopup()
-          .on("dblclick click", markerEvent)
-          //.on("click", markerClick);
+          var stop_id = "{{stop.stop_code}}";
+          var stop_name = "{{stop.stop_name}}"
+          if (stop_id == "102" || stop_id == "2329"){
+            L.circleMarker([lat,long], {title: stop_id + ": " + stop_name, color: "red"}).addTo(map)
+            //.bindPopup('<b>'+ "{{stop.stop_id}}" + '</b><br/>' + "{{stop.stop_name}}").openPopup()
+            .on("dblclick click", markerEvent)
+            //.on("click", markerClick);
+          } else{
+            L.circleMarker([lat,long], {title: stop_id + ": " + stop_name, radius: 2}).addTo(map)
+            //.bindPopup('<b>'+ "{{stop.stop_id}}" + '</b><br/>' + "{{stop.stop_name}}").openPopup()
+            .on("dblclick click", markerEvent)
+            //.on("click", markerClick);
+            }
         {% endfor %}
         map.setView([45.656, -122.584], 15);
       }
@@ -51,18 +72,20 @@
       //This function get called when double clicking a marker. It then passes the marker's coords to the single_stop page
       function markerEvent(e){
         if (e.type == "dblclick"){
+          var code = this.options.title;
           var coords = e.latlng;
           var lat = coords.lat;
           var long = coords.lng;
-          var url = "{% url 'SysMap-single_stop' lat=1 long=2 %}";
+          var url = "{% url 'SysMap-single_stop' lat=1 long=2 code=3 %}";
           
           var stopObj = {
             1: lat,
-            2: long
+            2: long,
+            3: code
           }
 
-          
-          document.location.href = url.replace(/1|2/gi, function(matched){
+          //Function uses regex to replace url inputs. Will likey need to be expaned in the future.
+          document.location.href = url.replace(/1|2|3/gi, function(matched){
             return stopObj[matched];
           });
         }

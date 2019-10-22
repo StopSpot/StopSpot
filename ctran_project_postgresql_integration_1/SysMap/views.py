@@ -29,10 +29,11 @@ def home(request):
 def about(request):
     return render(request, 'SysMap/about.html', {'title': 'About'})
 
-def single_stop(request, lat, long):
+def single_stop(request, lat, long, code):
     context = {
         'lat' : lat,
         'long' : long,
+        'code' : code,
     }
     return render(request, 'SysMap/single_stop.html', context )
 
