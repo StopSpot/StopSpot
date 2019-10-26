@@ -52,4 +52,4 @@ followed by
 ```
 python3 manage.py migrate
 ```
-to create the need models. 
+to create the needed models. 
