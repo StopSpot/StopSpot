@@ -22,8 +22,9 @@
             var elong ="{{event.x_coordinate}}";
             var ecode = "{{event.location_id}}";  //this does pass the stop code to the local variable. I need to figure out how
             // to assign it to the marker so it can be passed when the marker is clicked.
-        
+           if( "{{event.door}}" == 1 && "{{event.location_id}}" == {{code}}){ 
             var marker = L.circleMarker([elat,elong], {radius: 2}).addTo(map) //default way to add a point onto the map.
+           }
             //.bindPopup('<b>'+ "{{stop.stop_code}}" + '</b><br/>' + "{{stop.stop_name}}" + lat + long).openPopup()
             //.on("dblclick click", markerEvent)
            

@@ -43,7 +43,7 @@
           var long ="{{stop.stop_lon}}";
           var stop_id = "{{stop.stop_code}}";
           var stop_name = "{{stop.stop_name}}"
-          if (stop_id == "102" || stop_id == "2329"){
+          if (stop_id == "102" || stop_id == "2329" || stop_id == "4123"){
             L.circleMarker([lat,long], {title: stop_id, color: "#d55e00"}).addTo(map)
             //.bindPopup('<b>'+ "{{stop.stop_id}}" + '</b><br/>' + "{{stop.stop_name}}").openPopup()
             .on("dblclick click", markerEvent)
