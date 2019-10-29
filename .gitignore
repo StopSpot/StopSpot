@@ -1,2 +1,4 @@
 # Bins
 *.pyc
+
+.DS_Store
