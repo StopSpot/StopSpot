@@ -18,7 +18,7 @@ https://github.com/makinacorpus/django-leaflet
 https://django-leaflet.readthedocs.io/en/latest/index.html
   
 ## Setting up Postgresql 
-First, you'll need to install Postgresql on your machine. We found that https://www.postgresql.org/download/ was easy to navigate and the installation was fairly straightforward. 
+You'll need to install Postgresql on your machine. We found that https://www.postgresql.org/download/ was easy to navigate and the installation was fairly straightforward. 
 
 *We strongly recommend creating a password you only use for Postgres as it easy to push it to your repo.*
  
@@ -42,3 +42,14 @@ python3 manage.py runserver
 in the SysMap folder to see if the connection to Postgres is working. 
 
 ## Initial migrations 
+The migrations will allow Django to interface with Postgres. 
+To setup migrations head to the ctran_project_postgresql_integration_1 folder and type: 
+```
+python3 manage.py makemigrations
+
+```
+followed by 
+```
+python3 manage.py migrate
+```
+to create the needed models. 

@@ -5,8 +5,10 @@
 {% leaflet_js %}
 
 </head>
+<h1>Stop {{code}}</h1>
 <h1>Lat is {{lat}}</h1><br/>
 <h1>Long is {{long}}</h1>
+
 <body>{% leaflet_map "system_map" callback="single_stop_init" %} </body>
 
 <script>
