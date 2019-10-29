@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import bus_stop
+from .models import stop_instance
 
 posts = [
     {
@@ -30,10 +31,12 @@ def about(request):
     return render(request, 'SysMap/about.html', {'title': 'About'})
 
 def single_stop(request, lat, long, code):
+    stop_instances = stop_instance.objects.all()
     context = {
         'lat' : lat,
         'long' : long,
         'code' : code,
+        'stop_instances' : stop_instances
     }
     return render(request, 'SysMap/single_stop.html', context )
 

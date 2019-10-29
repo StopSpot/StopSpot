@@ -44,12 +44,12 @@
           var stop_id = "{{stop.stop_code}}";
           var stop_name = "{{stop.stop_name}}"
           if (stop_id == "102" || stop_id == "2329"){
-            L.circleMarker([lat,long], {title: stop_id + ": " + stop_name, color: "#d55e00"}).addTo(map)
+            L.circleMarker([lat,long], {title: stop_id, color: "#d55e00"}).addTo(map)
             //.bindPopup('<b>'+ "{{stop.stop_id}}" + '</b><br/>' + "{{stop.stop_name}}").openPopup()
             .on("dblclick click", markerEvent)
             //.on("click", markerClick);
           } else{
-            L.circleMarker([lat,long], {title: stop_id + ": " + stop_name, color: "#0072b2", radius: 2}).addTo(map)
+            L.circleMarker([lat,long], {title: stop_id, color: "#0072b2", radius: 2}).addTo(map)
             .on("dblclick click", markerEvent)
             //.on("click", markerClick);
             }
