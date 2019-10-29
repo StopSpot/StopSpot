@@ -13,18 +13,7 @@
 
       
     
-    {% for post in posts %}
-        <article class="media content-section">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="#">{{ post.author }}</a>
-              <small class="text-muted">{{ post.date_posted }}</small>
-            </div>
-            <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content }}</p>
-          </div>
-        </article>
-    {% endfor %}
+    
 
    
     
@@ -76,6 +65,13 @@
           var lat = coords.lat;
           var long = coords.lng;
           var url = "{% url 'SysMap-single_stop' lat=1 long=2 code=3 %}";
+        }
+        else if(e.type == "click"){
+          var stop_id = document.getElementById('stop_id');
+          var stop_code = document.getElementById('stop_code');
+          var stop_name = document.getElementById('stop_name');
+          stop_name.textContent = this.options.title;
+        }
           
           var stopObj = {
             1: lat,
@@ -87,10 +83,7 @@
           document.location.href = url.replace(/1|2|3/gi, function(matched){
             return stopObj[matched];
           });
-        }
-        else{
-
-        }
+        
       }
     </script>
 </body>
