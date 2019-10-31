@@ -10,14 +10,7 @@
 
     </head>
 
-
-      
     
-    
-
-   
-    
-
   <body>{% leaflet_map "system_map" callback="map_init" %}
   
     <script>
@@ -44,12 +37,12 @@
           var stop_id = "{{stop.stop_code}}";
           var stop_name = "{{stop.stop_name}}"
           if (stop_id == "102" || stop_id == "2329" || stop_id == "4123"){
-            L.circleMarker([lat,long], {title: stop_id, color: "#d55e00"}).addTo(map)
+            L.circleMarker([lat,long], {title: stop_id, color: "#d55e00", alt: stop_name}).addTo(map)
             //.bindPopup('<b>'+ "{{stop.stop_id}}" + '</b><br/>' + "{{stop.stop_name}}").openPopup()
             .on("dblclick click", markerEvent)
             //.on("click", markerClick);
           } else{
-            L.circleMarker([lat,long], {title: stop_id, color: "#0072b2", radius: 2}).addTo(map)
+            L.circleMarker([lat,long], {title: stop_id, alt: stop_name, color: "#0072b2", radius: 2}).addTo(map)
             .on("dblclick click", markerEvent)
             //.on("click", markerClick);
             }
@@ -66,11 +59,14 @@
           var long = coords.lng;
           var url = "{% url 'SysMap-single_stop' lat=1 long=2 code=3 %}";
         }
+        //need to adjust the stop_id vs stop_code
         else if(e.type == "click"){
           var stop_id = document.getElementById('stop_id');
           var stop_code = document.getElementById('stop_code');
           var stop_name = document.getElementById('stop_name');
-          stop_name.textContent = this.options.title;
+          stop_name.textContent = this.options.alt;
+          stop_code.textContent = this.options.title;
+
         }
           
           var stopObj = {

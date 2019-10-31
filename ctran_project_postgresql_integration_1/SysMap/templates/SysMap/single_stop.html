@@ -16,7 +16,7 @@
 <script>
     function single_stop_init(map, options){
         L.marker([{{lat}},{{long}}]).addTo(map);
-        map.setView([{{lat}}, {{long}}], 13);
+        map.setView([{{lat}}, {{long}}], 17);
         {% for event in stop_instances %} 
             var elat = "{{event.y_coordinate}}";
             var elong ="{{event.x_coordinate}}";
