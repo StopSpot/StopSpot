@@ -31,12 +31,14 @@ def about(request):
     return render(request, 'SysMap/about.html', {'title': 'About'})
 
 def single_stop(request, lat, long, code):
-    stop_instances = stop_instance.objects.all()
+    stop_instances = stop_instance.objects.filter(location_id = code)
+    number_instances = stop_instance.objects.filter(location_id = code).count()
     context = {
         'lat' : lat,
         'long' : long,
         'code' : code,
-        'stop_instances' : stop_instances
+        'stop_instances' : stop_instances,
+        'number_instances' : number_instances
     }
     return render(request, 'SysMap/single_stop.html', context )
 
