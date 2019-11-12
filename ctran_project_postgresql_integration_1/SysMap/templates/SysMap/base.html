@@ -13,16 +13,16 @@
     <link rel="stylesheet" type="text/css" href="{% static 'SysMap/main.css' %}">
 
     {% if title %}
-        <title>CTRAN Sysem Map - {{ title }}</title>
+        <title>CTRAN System Map - {{ title }}</title>
     {% else %}
-        <title>CTRAN Sysem Map</title>
+        <title>CTRAN System Map</title>
     {% endif %}
 </head>
 <body>
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="{% url 'SysMap-home' %}">CTRAN Sysem Map</a>
+          <a class="navbar-brand mr-4" href="{% url 'SysMap-home' %}">CTRAN System Map</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           </button>

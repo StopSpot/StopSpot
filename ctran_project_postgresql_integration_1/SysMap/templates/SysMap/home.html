@@ -13,6 +13,8 @@
     
   <body>
     <!-- This is the sidebar to hold analysis/information for System Map. It is placed before map call for design purposes. -->
+
+    <div class="row">
       <div class="col-md-4">
           <div class="content-section">
             <h3>CTRAN Analysis Sidebar</h3>
@@ -26,9 +28,10 @@
             </p>
           </div>
         </div>
-
-    {% leaflet_map "system_map" callback="map_init" %}
-
+      <div class="col-md-8">
+        {% leaflet_map "system_map" callback="map_init" %}
+      </div>
+    </div>
     <script>
 
       

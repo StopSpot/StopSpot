@@ -9,6 +9,11 @@
 </head>
 
 <body>
+    <div class="row">
+        <div class="col-md-6">
+                {% leaflet_map "system_map" callback="single_stop_init" %} 
+                {% leaflet_map "sat_map" callback="sat_map_init" %} 
+        </div>
         <div class="col-md-6">
             <div class="content-section">
                 <h3>CTRAN Single Stop Data Sidebar</h3>
@@ -21,9 +26,8 @@
                 </p>
             </div>
         </div>
-    {% leaflet_map "system_map" callback="single_stop_init" %} 
-    {% leaflet_map "sat_map" callback="sat_map_init" %} 
-
+       
+    </div>
 </body>
 
 <script>
