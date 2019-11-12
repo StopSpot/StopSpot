@@ -24,7 +24,7 @@ def home(request):
     #time.time() is in seconds
     begin = time.time()
 
-    #get all bus stops. Get all stop 
+    #get all bus stops. Get all stop instances where the door opens. Get all stop instances where location distance >= 30
     bus_stops = bus_stop.objects.all()
     stop_instances = stop_instance.objects.filter(door = 1)
     stop_instances_gt30 = stop_instance.objects.filter(door=1,location_distance__gte = 30)
@@ -32,10 +32,12 @@ def home(request):
     greaterThan_stop_dict = {}
     pct_error_dict = {}
 
+    #initialize stop dicts
     for stop in bus_stops.iterator():
         total_stop_dict[stop.stop_code] = 0
         greaterThan_stop_dict[stop.stop_code] = 0
 
+    #Add all stops to total stop dict. Add all stops that with location distance > 30 in greaterThan dict. 
     for stop in stop_instances.iterator():
         try:
             total_stop_dict[stop.location_id] += 1
@@ -44,12 +46,14 @@ def home(request):
         except:
             continue
         
+    #Calculate percent error
     for stop in total_stop_dict:
         try:
             pct_error_dict[stop] = round(greaterThan_stop_dict[stop]/total_stop_dict[stop], 3)
         except:
             continue
     
+    #Sanity checking output and calculating load time
     num_stops = 0
     gt80_pct = 0
     for stop in pct_error_dict:
