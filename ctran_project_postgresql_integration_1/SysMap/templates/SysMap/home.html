@@ -7,19 +7,28 @@
     <head>
     {% leaflet_css %}
     {% leaflet_js %}
-
+    
     </head>
-
-
-      
     
     
+  <body>
+    <!-- This is the sidebar to hold analysis/information for System Map. It is placed before map call for design purposes. -->
+      <div class="col-md-4">
+          <div class="content-section">
+            <h3>CTRAN Analysis Sidebar</h3>
+            <p class='text-muted'>This is for putting useful tools
+              <ul class="list-group">
+                <li id=stop_id class="list-group-item list-group-item-light">stop id</li>
+                <li id=stop_code class="list-group-item list-group-item-light">stop code</li>
+                <li id=stop_name class="list-group-item list-group-item-light">stop name</li>
+                <li class="list-group-item list-group-item-light">Analysis</li>
+              </ul>
+            </p>
+          </div>
+        </div>
 
-   
-    
+    {% leaflet_map "system_map" callback="map_init" %}
 
-  <body>{% leaflet_map "system_map" callback="map_init" %}
-  
     <script>
 
       
@@ -32,29 +41,31 @@
             popupAnchor:  [-3, -76]
           }
       });
-
-      //This is how to create custom marker and point it at static files. 
-      var orcIcon = new customIcon({iconUrl: "{% static 'img/orc.jpg' %}"});
       
       //This function initalizes the map with all stops from bus_stop table
       function map_init(map, options){
+        var err_count = 0;
+        var pct_err = {{pct_error_dict|safe}};
+
         {% for stop in bus_stops %} 
           var lat = "{{stop.stop_lat}}";
           var long ="{{stop.stop_lon}}";
           var stop_id = "{{stop.stop_code}}";
-          var stop_name = "{{stop.stop_name}}"
-          if (stop_id == "102" || stop_id == "2329"){
-            L.circleMarker([lat,long], {title: stop_id + ": " + stop_name, color: "#d55e00"}).addTo(map)
-            //.bindPopup('<b>'+ "{{stop.stop_id}}" + '</b><br/>' + "{{stop.stop_name}}").openPopup()
+          var stop_name = "{{stop.stop_name}}";
+          
+          if (Number(pct_err[stop_id]) >= .8){
+            L.circleMarker([lat,long], {title: stop_id, color: "#d55e00", alt: stop_name}).addTo(map)
             .on("dblclick click", markerEvent)
-            //.on("click", markerClick);
-          } else{
-            L.circleMarker([lat,long], {title: stop_id + ": " + stop_name, color: "#0072b2", radius: 2}).addTo(map)
-            .on("dblclick click", markerEvent)
-            //.on("click", markerClick);
-            }
+            err_count = err_count + 1;
+
+          } 
+
+          L.circleMarker([lat,long], {title: stop_id, alt: stop_name, color: "#0072b2", radius: 2}).addTo(map)
+          .on("dblclick click", markerEvent)
+            
         {% endfor %}
-        map.setView([45.656, -122.584], 15);
+        console.log(err_count);
+        map.setView([45.656, -122.584], 15);  
       }
 
       //This function get called when double clicking a marker. It then passes the marker's coords to the single_stop page
@@ -66,11 +77,14 @@
           var long = coords.lng;
           var url = "{% url 'SysMap-single_stop' lat=1 long=2 code=3 %}";
         }
+        //need to adjust the stop_id vs stop_code
         else if(e.type == "click"){
           var stop_id = document.getElementById('stop_id');
           var stop_code = document.getElementById('stop_code');
           var stop_name = document.getElementById('stop_name');
-          stop_name.textContent = this.options.title;
+          stop_name.textContent = this.options.alt;
+          stop_code.textContent = this.options.title;
+
         }
           
           var stopObj = {
@@ -79,13 +93,15 @@
             3: code
           }
 
-          //Function uses regex to replace url inputs. Will likey need to be expaned in the future.
+          //Function uses regex to replace url inputs. Will likey need to be expanded in the future.
           document.location.href = url.replace(/1|2|3/gi, function(matched){
             return stopObj[matched];
           });
         
       }
     </script>
+
+    
 </body>
 {% endblock content %}
 

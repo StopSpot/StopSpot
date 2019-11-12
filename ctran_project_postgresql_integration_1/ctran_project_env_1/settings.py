@@ -91,7 +91,7 @@ WSGI_APPLICATION = 'ctran_project_env_1.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'SysMap_2',
+        'NAME': 'experiment_db',
         'USER': 'postgres',
         'PASSWORD': 'Dymanic1-1',
         'HOST': 'localhost'
