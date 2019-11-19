@@ -16,10 +16,14 @@ def home(request):
     total_stop_dict = {}
     greaterThan_stop_dict = {}
     pct_error_dict = {}
+    euclidian_dict = {}
+    euclidian_gte = {}
 
     for stop in bus_stops.iterator():
         total_stop_dict[stop.stop_code] = 0
         greaterThan_stop_dict[stop.stop_code] = 0
+        euclidian_dict[stop.stop_code] = (stop.stop_lon,stop.stop_lat)
+
 
     for stop in stop_instances.iterator():
         try:

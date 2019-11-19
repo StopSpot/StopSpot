@@ -12,6 +12,23 @@
     
     
   <body>
+      <style>
+
+          .leaflet-container {  /* all maps */
+              width:  800px;
+              height: 600px;
+          }
+      
+          #specialbigmap {
+              height: 800px;
+          }
+      
+          /* Resize the "display_raw" textbox */
+          .django-leaflet-raw-textarea {
+              width: 100%;
+          }
+      
+      </style>
     <!-- This is the sidebar to hold analysis/information for System Map. It is placed before map call for design purposes. -->
 
     <div class="row">
@@ -32,6 +49,10 @@
         {% leaflet_map "system_map" callback="map_init" %}
       </div>
     </div>
+    <div>
+      <button onclick="downloadCSV('system_percent_error')">Download CSV</button>
+    </div>
+
     <script>
 
       
@@ -101,6 +122,31 @@
             return stopObj[matched];
           });
         
+      }
+      function downloadCSV(filename){
+        let a = document.createElement('a');
+        let pct_err = {{pct_error_dict|safe}};
+        let pct_err_csv = jsonToCSV(pct_err);
+        
+
+        a.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(pct_err_csv));
+        a.setAttribute('download', filename);
+        a.style.display = 'none';
+        document.body.appendChild(a);
+
+        a.click();
+
+        document.body.removeChild(a);
+
+      }
+      function jsonToCSV(json_data){
+        csv = 'Stop,Percent Error \n';
+        keys = Object.keys(json_data);
+        for(key in keys){
+          csv += keys[key] + ',' + json_data[keys[key]] + '\n';
+        }
+        console.log(csv);
+        return csv;
       }
     </script>
 
