@@ -9,6 +9,8 @@ def home(request):
     #time.time() is in seconds
     begin = time.time()
 
+    greaterThan = 30
+
     #get all bus stops. Get all stop 
     bus_stops = bus_stop.objects.all()
     stop_instances = stop_instance.objects.filter(door = 1)
@@ -16,13 +18,12 @@ def home(request):
     total_stop_dict = {}
     greaterThan_stop_dict = {}
     pct_error_dict = {}
-    euclidian_dict = {}
-    euclidian_gte = {}
+    pct_error_dict['Header'] = ("Stop Code", "Percent Error", "Total Stops", 'Stops Greater Than ' + str(greaterThan))
+
 
     for stop in bus_stops.iterator():
         total_stop_dict[stop.stop_code] = 0
         greaterThan_stop_dict[stop.stop_code] = 0
-        euclidian_dict[stop.stop_code] = (stop.stop_lon,stop.stop_lat)
 
 
     for stop in stop_instances.iterator():
@@ -35,7 +36,7 @@ def home(request):
         
     for stop in total_stop_dict:
         try:
-            pct_error_dict[stop] = round(greaterThan_stop_dict[stop]/total_stop_dict[stop], 3)
+            pct_error_dict[stop] = (round(greaterThan_stop_dict[stop]/total_stop_dict[stop], 3), total_stop_dict[stop], greaterThan_stop_dict[stop])
         except:
             continue
     
@@ -43,7 +44,7 @@ def home(request):
     gt80_pct = 0
     for stop in pct_error_dict:
         num_stops += 1
-        if pct_error_dict[stop] > .8:
+        if str(stop) != 'Header' and pct_error_dict[stop][0] > .8:
             print(str(stop) + "pct error: " + str(pct_error_dict[stop]))
             gt80_pct += 1
         

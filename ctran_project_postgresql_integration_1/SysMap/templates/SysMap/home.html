@@ -77,11 +77,11 @@
           var stop_id = "{{stop.stop_code}}";
           var stop_name = "{{stop.stop_name}}";
           
-          if (Number(pct_err[stop_id]) >= .8){
+          if (pct_err[stop_id] && Number(pct_err[stop_id][0]) >= .8){
             L.circleMarker([lat,long], {title: stop_id, color: "#d55e00", alt: stop_name}).addTo(map)
             .on("dblclick click", markerEvent)
             err_count = err_count + 1;
-
+            console.log(err_count);
           } 
 
           L.circleMarker([lat,long], {title: stop_id, alt: stop_name, color: "#0072b2", radius: 2}).addTo(map)
@@ -128,7 +128,6 @@
         let pct_err = {{pct_error_dict|safe}};
         let pct_err_csv = jsonToCSV(pct_err);
         
-
         a.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(pct_err_csv));
         a.setAttribute('download', filename);
         a.style.display = 'none';
@@ -140,17 +139,28 @@
 
       }
       function jsonToCSV(json_data){
-        csv = 'Stop,Percent Error \n';
+        header = json_data['Header'];
+        
+        csv = '';
+        for(i = 0; i< header.length; i++){
+          csv += header[i];
+          if(i < header.length - 1){
+            csv += ", "
+          }
+        }
+        csv += '\n';
+
         keys = Object.keys(json_data);
         for(key in keys){
-          csv += keys[key] + ',' + json_data[keys[key]] + '\n';
+          if(keys[key] != 'Header'){
+            csv += keys[key] + ',' + json_data[keys[key]] + '\n';
+          }
         }
         console.log(csv);
         return csv;
       }
     </script>
 
-    
 </body>
 {% endblock content %}
 
