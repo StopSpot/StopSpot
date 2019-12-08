@@ -4,25 +4,12 @@ from .models import stop_instance
 import time
 import json
 
-posts = [
-    {
-        'author': 'CoreyMS',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'August 27, 2018'
-    },
-    {
-        'author': 'Jane Doe',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'August 28, 2018'
-    }
-]
-
 
 def home(request):
     #time.time() is in seconds
     begin = time.time()
+
+    greaterThan = 30
 
     #get all bus stops. Get all stop 
     bus_stops = bus_stop.objects.all()
@@ -31,6 +18,10 @@ def home(request):
     total_stop_dict = {}
     greaterThan_stop_dict = {}
     pct_error_dict = {}
+
+    #Add more info to the header here
+    pct_error_dict['Header'] = ("Stop Code", "Percent Error", "Total Stops", 'Stops Greater Than ' + str(greaterThan))
+
 
     for stop in bus_stops.iterator():
         total_stop_dict[stop.stop_code] = 0
@@ -46,7 +37,7 @@ def home(request):
         
     for stop in total_stop_dict:
         try:
-            pct_error_dict[stop] = round(greaterThan_stop_dict[stop]/total_stop_dict[stop], 3)
+            pct_error_dict[stop] = (round(greaterThan_stop_dict[stop]/total_stop_dict[stop], 3), total_stop_dict[stop], greaterThan_stop_dict[stop])
         except:
             continue
     
@@ -54,21 +45,20 @@ def home(request):
     gt80_pct = 0
     for stop in pct_error_dict:
         num_stops += 1
-        if pct_error_dict[stop] > .8:
+        if stop != 'Header' and pct_error_dict[stop][0] > .8:
             print(str(stop) + "pct error: " + str(pct_error_dict[stop]))
             gt80_pct += 1
-        
+    
+    #For debugging. Remove for production.
     print("number of stops with greater than 80 pct error:" + str(gt80_pct))
     print("number of stops:" + str(num_stops))
  
-    context = {
-        'posts': posts
-    }
+    context = {}
     context['bus_stops'] = bus_stops
     context['pct_error_dict'] = json.dumps(pct_error_dict)  
     end = time.time()
     print((end - begin)/60)
-    return render(request, 'SysMap/home.html', context, bus_stops)
+    return render(request, 'SysMap/home.html', context)
 
 
 def about(request):

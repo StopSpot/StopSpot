@@ -7,12 +7,28 @@
 {% leaflet_js %}
 
 </head>
-<h1>Lat is {{lat}}</h1><br/>
-<h1>Long is {{long}}</h1><br/>
-<h1>Code is {{code}}</h1>
-<h1>Number of stops {{number_instances}}</h1>
 
-<body>{% leaflet_map "system_map" callback="single_stop_init" %} </body>
+<body>
+    <div class="row">
+        <div class="col-md-6">
+                {% leaflet_map "system_map" callback="single_stop_init" %} 
+                {% leaflet_map "sat_map" callback="sat_map_init" %} 
+        </div>
+        <div class="col-md-6">
+            <div class="content-section">
+                <h3>CTRAN Single Stop Data Sidebar</h3>
+                <p class='text-muted'>Important Info for stop {{code}}.
+                    <ul class="list-group">
+                    <li id=stop_id class="list-group-item list-group-item-light">Coordinates: ({{lat}}, {{long}})</li>
+                    <li id=stop_code class="list-group-item list-group-item-light">Stop Code: {{code}}</li>
+                    <li id=stop_name class="list-group-item list-group-item-light"># Stops: {{number_instances}}</li>
+                </ul>
+                </p>
+            </div>
+        </div>
+       
+    </div>
+</body>
 
 <script>
     function single_stop_init(map, options){
@@ -26,16 +42,39 @@
            if( "{{event.door}}" == 1 && "{{event.location_id}}" == {{code}}){ 
             var marker = L.circleMarker([elat,elong], {radius: 2}).addTo(map) //default way to add a point onto the map.
            }
-            //.bindPopup('<b>'+ "{{stop.stop_code}}" + '</b><br/>' + "{{stop.stop_name}}" + lat + long).openPopup()
-            //.on("dblclick click", markerEvent)
            
         {% endfor %}
         
         // to assign it to the marker so it can be passed when the marker is clicked.
         
     }
-</script>
 
+    /*  An additional map to be added later (hopefully into a satellite perspective).
+    function sat_map_init(map, options){
+        
+        L.marker([{{lat}},{{long}}]).addTo(map);
+
+        map.setView([{{lat}}, {{long}}], 17);
+        
+        {% for event in stop_instances %} 
+            var elat = "{{event.y_coordinate}}";
+            var elong ="{{event.x_coordinate}}";
+            var ecode = "{{event.location_id}}";  //this does pass the stop code to the local variable. I need to figure out how
+            // to assign it to the marker so it can be passed when the marker is clicked.
+           if( "{{event.door}}" == 1 && "{{event.location_id}}" == {{code}}){ 
+            var marker = L.circleMarker([elat,elong], {radius: 2}).addTo(map) //default way to add a point onto the map.
+           }
+            //.bindPopup('<b>'+ "{{stop.stop_code}}" + '</b><br/>' + "{{stop.stop_name}}" + lat + long).openPopup()
+            //.on("dblclick click", markerEvent)
+           
+        {% endfor %} 
+    
+        // to assign it to the marker so it can be passed when the marker is clicked.
+
+    }
+    */
+
+</script>
 
 </body>
 {% endblock content %}

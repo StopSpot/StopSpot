@@ -1,18 +1,63 @@
 {% extends "SysMap/base.html" %}
 {% block content %}
     {% load leaflet_tags %}
-    {% load static %}
-
    
     <head>
+    {% load static %}
     {% leaflet_css %}
     {% leaflet_js %}
+    <script type="text/javascript" src="{% static 'SysMap/js/csv_maker.js' %}"></script>
+
     
     </head>
-
     
-  <body>{% leaflet_map "system_map" callback="map_init" %}
+    
+  <body>
+      <style>
 
+          .leaflet-container {  /* all maps */
+              width:  800px;
+              height: 600px;
+          }
+      
+          #specialbigmap {
+              height: 800px;
+          }
+      
+          /* Resize the "display_raw" textbox */
+          .django-leaflet-raw-textarea {
+              width: 100%;
+          }
+      
+      </style>
+
+    <!-- This is the sidebar to hold analysis/information for System Map. It is placed before map call for design purposes. -->
+
+    <div class="row">
+      <div class="col-md-4">
+          <div class="content-section">
+            <h3>CTRAN Analysis Sidebar</h3>
+            <p class='text-muted'>This is for putting useful tools
+              <ul class="list-group">
+                <li id=stop_id class="list-group-item list-group-item-light">stop id</li>
+                <li id=stop_code class="list-group-item list-group-item-light">stop code</li>
+                <li id=stop_name class="list-group-item list-group-item-light">stop name</li>
+                <li class="list-group-item list-group-item-light">Analysis</li>
+              </ul>
+            </p>
+          </div>
+        </div>
+      <div class="col-md-8">
+        {% leaflet_map "system_map" callback="map_init" %}
+      </div>
+    </div>
+    <div>
+      <script>
+        var data = {{pct_error_dict|safe}};
+      </script>
+      <button onclick="downloadCSV('system_percent_error', data)">Download CSV</button>
+    </div>
+    
     <script>
 
       
@@ -37,11 +82,11 @@
           var stop_id = "{{stop.stop_code}}";
           var stop_name = "{{stop.stop_name}}";
           
-          if (Number(pct_err[stop_id]) >= .8){
+          if (pct_err[stop_id] && Number(pct_err[stop_id][0]) >= .8){
             L.circleMarker([lat,long], {title: stop_id, color: "#d55e00", alt: stop_name}).addTo(map)
             .on("dblclick click", markerEvent)
             err_count = err_count + 1;
-
+            console.log(err_count);
           } 
 
           L.circleMarker([lat,long], {title: stop_id, alt: stop_name, color: "#0072b2", radius: 2}).addTo(map)
@@ -77,13 +122,17 @@
             3: code
           }
 
-          //Function uses regex to replace url inputs. Will likey need to be expaned in the future.
+          //Function uses regex to replace url inputs. Will likey need to be expanded in the future.
           document.location.href = url.replace(/1|2|3/gi, function(matched){
             return stopObj[matched];
           });
         
       }
+
+      
+    
     </script>
+
 </body>
 {% endblock content %}
 
