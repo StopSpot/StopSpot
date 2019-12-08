@@ -18,6 +18,8 @@ def home(request):
     total_stop_dict = {}
     greaterThan_stop_dict = {}
     pct_error_dict = {}
+
+    #Add more info to the header here
     pct_error_dict['Header'] = ("Stop Code", "Percent Error", "Total Stops", 'Stops Greater Than ' + str(greaterThan))
 
 
@@ -44,10 +46,11 @@ def home(request):
     gt80_pct = 0
     for stop in pct_error_dict:
         num_stops += 1
-        if str(stop) != 'Header' and pct_error_dict[stop][0] > .8:
+        if stop != 'Header' and pct_error_dict[stop][0] > .8:
             print(str(stop) + "pct error: " + str(pct_error_dict[stop]))
             gt80_pct += 1
-        
+    
+    #For debugging. Remove for production.
     print("number of stops with greater than 80 pct error:" + str(gt80_pct))
     print("number of stops:" + str(num_stops))
  
@@ -56,7 +59,7 @@ def home(request):
     context['pct_error_dict'] = json.dumps(pct_error_dict)  
     end = time.time()
     print((end - begin)/60)
-    return render(request, 'SysMap/home.html', context, bus_stops)
+    return render(request, 'SysMap/home.html', context)
 
 
 def about(request):
