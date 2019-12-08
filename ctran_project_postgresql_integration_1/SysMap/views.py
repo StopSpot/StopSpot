@@ -27,7 +27,6 @@ def home(request):
         total_stop_dict[stop.stop_code] = 0
         greaterThan_stop_dict[stop.stop_code] = 0
 
-
     for stop in stop_instances.iterator():
         try:
             total_stop_dict[stop.location_id] += 1
