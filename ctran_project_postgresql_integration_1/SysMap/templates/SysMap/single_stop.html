@@ -33,6 +33,15 @@
 <script>
     function single_stop_init(map, options){
         L.marker([{{lat}},{{long}}]).addTo(map);
+
+        // a circle around the stop
+        var circle = L.circle([{{lat}},{{long}}], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 30
+        }).addTo(map);
+
         map.setView([{{lat}}, {{long}}], 17);
         {% for event in stop_instances %} 
             var elat = "{{event.y_coordinate}}";
@@ -42,8 +51,6 @@
            if( "{{event.door}}" == 1 && "{{event.location_id}}" == {{code}}){ 
             var marker = L.circleMarker([elat,elong], {radius: 2}).addTo(map) //default way to add a point onto the map.
            }
-            //.bindPopup('<b>'+ "{{stop.stop_code}}" + '</b><br/>' + "{{stop.stop_name}}" + lat + long).openPopup()
-            //.on("dblclick click", markerEvent)
            
         {% endfor %}
         

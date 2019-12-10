@@ -1,17 +1,36 @@
 {% extends "SysMap/base.html" %}
 {% block content %}
     {% load leaflet_tags %}
-    {% load static %}
-
    
     <head>
+    {% load static %}
     {% leaflet_css %}
     {% leaflet_js %}
+    <script type="text/javascript" src="{% static 'SysMap/js/csv_maker.js' %}"></script>
+
     
     </head>
     
     
   <body>
+      <style>
+
+          .leaflet-container {  /* all maps */
+              width:  800px;
+              height: 600px;
+          }
+      
+          #specialbigmap {
+              height: 800px;
+          }
+      
+          /* Resize the "display_raw" textbox */
+          .django-leaflet-raw-textarea {
+              width: 100%;
+          }
+      
+      </style>
+
     <!-- This is the sidebar to hold analysis/information for System Map. It is placed before map call for design purposes. -->
 
     <div class="row">
@@ -32,6 +51,13 @@
         {% leaflet_map "system_map" callback="map_init" %}
       </div>
     </div>
+    <div>
+      <script>
+        var data = {{pct_error_dict|safe}};
+      </script>
+      <button onclick="downloadCSV('system_percent_error', data)">Download CSV</button>
+    </div>
+    
     <script>
 
       
@@ -56,11 +82,11 @@
           var stop_id = "{{stop.stop_code}}";
           var stop_name = "{{stop.stop_name}}";
           
-          if (Number(pct_err[stop_id]) >= .8){
+          if (pct_err[stop_id] && Number(pct_err[stop_id][0]) >= .8){
             L.circleMarker([lat,long], {title: stop_id, color: "#d55e00", alt: stop_name}).addTo(map)
             .on("dblclick click", markerEvent)
             err_count = err_count + 1;
-
+            console.log(err_count);
           } 
 
           L.circleMarker([lat,long], {title: stop_id, alt: stop_name, color: "#0072b2", radius: 2}).addTo(map)
@@ -102,9 +128,11 @@
           });
         
       }
+
+      
+    
     </script>
 
-    
 </body>
 {% endblock content %}
 
