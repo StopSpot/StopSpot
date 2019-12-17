@@ -33,6 +33,15 @@
 <script>
     function single_stop_init(map, options){
         L.marker([{{lat}},{{long}}]).addTo(map);
+
+        // a circle around the stop
+        var circle = L.circle([{{lat}},{{long}}], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 30
+        }).addTo(map);
+
         map.setView([{{lat}}, {{long}}], 17);
         {% for event in stop_instances %} 
             var elat = "{{event.y_coordinate}}";
