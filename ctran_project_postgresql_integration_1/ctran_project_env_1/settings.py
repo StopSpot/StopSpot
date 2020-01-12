@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
-# THIS IS THE CODE FOR MARCUS"S DUMB COMPUTER FOR THE DJANGO TO FIND THE GDAL LIBRARY!!
+# THIS IS THE CODE FOR MARCUSS COMPUTER FOR THE DJANGO TO FIND THE GDAL LIBRARY!!
 if os.name == 'nt':
     import platform
     OSGEO4W = r"C:\OSGeo4W"
@@ -91,13 +91,9 @@ WSGI_APPLICATION = 'ctran_project_env_1.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ctran_django_1',
+        'NAME': 'ctran_db2',
         'USER': 'postgres',
-<<<<<<< Updated upstream
-        'PASSWORD': '6cs0zi151!',
-=======
         'PASSWORD': 'Dymanic1-1',
->>>>>>> Stashed changes
         'HOST': 'localhost'
     }
 }
