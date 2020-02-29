@@ -6,6 +6,7 @@ import json
 import plotly.offline as py
 import plotly.graph_objs as go
 import by_stop_analysis as bs
+import route_analysis as ra
 
 
 def home(request):
@@ -74,7 +75,7 @@ def single_stop(request, lat, long, code):
     number_instances = stop_instance.objects.filter(location_id=code, door=1).count()
     hist_div = bs.histogram_by_hour(code)
     box_div = bs.box_plot(code)
-    bar_day_div = bs.bar_chart_week(code)
+    bar_week_div = bs.bar_chart_week(code)
     bar_month_div = bs.bar_chart_month(code)
 
     context = {
@@ -85,7 +86,7 @@ def single_stop(request, lat, long, code):
         'number_instances': number_instances,
         'hist_div': hist_div,
         'box_div': box_div,
-        'bar_day_div': bar_day_div,
+        'bar_week_div': bar_week_div,
         'bar_month_div': bar_month_div,
     }
     return render(request, 'SysMap/single_stop.html', context)
@@ -99,7 +100,7 @@ def single_stop(request, lat, long, code):
 """
 
 
-def stop_hour(request, code):
+def stop(request, code):
     try:
         code
     except NameError:
@@ -119,3 +120,24 @@ def stop_hour(request, code):
     }
 
     return render(request, "SysMap/top.html", context)
+
+
+def routes(request):
+    bar_route_div = ra.bar_chart_routes()
+
+    context = {
+        'bar_route_div': bar_route_div
+    }
+
+    return render(request, "SysMap/route.html", context)
+
+
+def single_route(request, route):
+
+    bar_stops_div = ra.bar_chart_stops_on_route(route)
+
+    context = {
+         'bar_stops_div': bar_stops_div
+    }
+
+    return render(request, "SysMap/single_route.html", context)
