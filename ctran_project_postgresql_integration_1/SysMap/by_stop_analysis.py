@@ -2,7 +2,7 @@ from SysMap.models import stop_instance
 import plotly.offline as py
 import plotly.graph_objs as go
 from decimal import Decimal
-from datetime import datetime
+
 from django.db.models import Count
 from django.db.models.functions import ExtractWeekDay, ExtractMonth, ExtractYear
 
@@ -48,7 +48,7 @@ def histogram_by_hour(loc_id):
 
 
 def box_plot(loc_id):
-    out_b = stop_instance.objects.filter(door=1, location_distance__gt=out_of_bounds, location_id=loc_id).values_list(
+    out_b = stop_instance.objects.filter(door=1, location_distance__isnull=False, location_id=loc_id).values_list(
         'location_distance', flat=True)
     out_list = list(out_b)
     meter_to_foot = Decimal(.3048)
@@ -76,14 +76,13 @@ def box_plot(loc_id):
 
 def bar_chart_week(loc_id):
     out_b = stop_instance.objects.annotate(weekday=ExtractWeekDay('service_date')).values('weekday').annotate(count=Count('weekday')).values('weekday', 'count').filter(door=1, location_distance__gt=out_of_bounds, location_id=loc_id)
-    o_x = [i['weekday'] for i in out_b.iterator()]
     o_y = [i['count'] for i in out_b.iterator()]
     in_b = stop_instance.objects.annotate(weekday=ExtractWeekDay('service_date')).values('weekday').annotate(count=Count('weekday')).values('weekday', 'count').filter(door=1, location_distance__lte=out_of_bounds, location_id=loc_id)
-    in_x = [i['weekday'] for i in in_b.iterator()]
     in_y = [i['count'] for i in in_b.iterator()]
+    days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat']
     fig = go.Figure()
-    fig.add_trace(go.Bar(x=o_x, y=o_y, name='out of bounds stops'))
-    fig.add_trace(go.Bar(x=in_x, y=in_y, name='in bounds stops'))
+    fig.add_trace(go.Bar(x=days, y=o_y, name='out of bounds stops'))
+    fig.add_trace(go.Bar(x=days, y=in_y, name='in bounds stops'))
     fig.update_traces(opacity=.50)
     fig.update_layout(
         title='Out of bound vs in bound stops by day of week ' + str(loc_id),
@@ -106,14 +105,13 @@ def bar_chart_week(loc_id):
 
 def bar_chart_month(loc_id):
     out_b = stop_instance.objects.annotate(month=ExtractMonth('service_date')).values('month').annotate(count=Count('month')).values('month', 'count').filter(door=1, location_distance__gt=out_of_bounds, location_id=loc_id)
-    o_x = [i['month'] for i in out_b.iterator()]
     o_y = [i['count'] for i in out_b.iterator()]
     in_b = stop_instance.objects.annotate(month=ExtractMonth('service_date')).values('month').annotate(count=Count('month')).values('month', 'count').filter(door=1, location_distance__lte=out_of_bounds, location_id=loc_id)
-    in_x = [i['month'] for i in in_b.iterator()]
     in_y = [i['count'] for i in in_b.iterator()]
+    month = ['Jan', 'Feb', 'Mar', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     fig = go.Figure()
-    fig.add_trace(go.Bar(x=o_x, y=o_y, name='out of bounds stops'))
-    fig.add_trace(go.Bar(x=in_x, y=in_y, name='in bounds stops'))
+    fig.add_trace(go.Bar(x=month, y=o_y, name='out of bounds stops'))
+    fig.add_trace(go.Bar(x=month, y=in_y, name='in bounds stops'))
     fig.update_traces(opacity=.50)
     fig.update_layout(
         title='Out of bound vs in bound stops by month ' + str(loc_id),
