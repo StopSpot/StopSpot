@@ -9,6 +9,7 @@
 </head>
 
 <body>
+
     <div class="row">
         <div class="col-md-6">
                 {% leaflet_map "system_map" callback="single_stop_init" %} 
@@ -26,9 +27,36 @@
                 </p>
             </div>
         </div>
-       
     </div>
-</body>
+    <h3>Time Based Analysis</h3>
+    <div class="row">
+        <div class="col-lg-12">
+        {% autoescape off%}
+        {{ hist_div }}
+        {% endautoescape %}
+        </div>
+    </div>
+    <div class="row">
+         <div class="col-lg-6">
+        {% autoescape off%}
+        {{ bar_week_div }}
+        {% endautoescape %}
+        </div>
+         <div class="col-lg-6">
+        {% autoescape off%}
+        {{ bar_month_div }}
+        {% endautoescape %}
+        </div>
+    </div>
+        <h3>Location Distance Distribution</h3>
+    <div class="row">
+         <div class="col-lg-12">
+        {% autoescape off%}
+        {{ box_div }}
+        {% endautoescape %}
+        </div>
+    </div>
+
 
 <script>
     function single_stop_init(map, options){
@@ -77,4 +105,5 @@
 </script>
 
 </body>
+
 {% endblock content %}
