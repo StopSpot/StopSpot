@@ -1,4 +1,4 @@
-from SysMap.models import stop_instance
+from SysMap.models import stop_instance, bus_stop
 import plotly.offline as py
 import plotly.graph_objs as go
 from decimal import Decimal
@@ -123,3 +123,17 @@ def bar_chart_month(loc_id):
     plot_div = py.plot(fig, output_type='div')
     return plot_div
 
+"""
+    return_lat_long returns a list length 2 index 0 is latitude and index 0 is longitude associated with
+    location_id passed in as an argument
+"""
+def return_lat_long(loc_id):
+
+    coordinates =[]
+
+    data = bus_stop.objects.get(stop_code=loc_id)
+
+    coordinates.append(data.stop_lat)
+    coordinates.append(data.stop_lon)
+
+    return coordinates

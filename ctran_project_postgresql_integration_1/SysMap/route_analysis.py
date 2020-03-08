@@ -6,6 +6,12 @@ from decimal import Decimal
 from django.db.models import Count
 out_of_bounds = 98.4252 #in feet
 
+"""
+    bar_char_routes produces a plotly bar chart containing aggregate data (looks at all data in db) to 
+    see number of in bound and out of bounds stop instances for each route
+    Arguments: none
+    Returns: div object containing the plotly chart
+"""
 
 def bar_chart_routes():
     out_b = stop_instance.objects.values('route_number').annotate(count=Count('route_number')).values('route_number', 'count').filter(door=1, route_number__isnull=False, location_distance__gt=out_of_bounds)
@@ -39,6 +45,12 @@ def bar_chart_routes():
     plot_div = py.plot(fig, output_type='div')
     return plot_div
 
+"""
+    bar_chart_stops_on_route produces a plotly bar chart containing aggregate data (looks at all data in db) to 
+    see number of in bound and out of bounds stop instances for each location_id on a route
+    Arguments: none
+    Returns: div object containing the plotly chart
+"""
 
 def bar_chart_stops_on_route(route):
     out_b = stop_instance.objects.values('location_id').annotate(count=Count('location_id')).values('location_id', 'count').filter(door=1,
