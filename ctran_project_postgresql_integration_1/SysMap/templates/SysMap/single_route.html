@@ -12,6 +12,17 @@
                 {{ bar_stops_div }}
                 {% endautoescape %}
         </div>
+        <div class="row align-center">
+            <h4>Enter the location id of a stop to see the associated stop specific analysis</h4>
+            <p></p>
+            <form method="post" target="_blank">
+                {% csrf_token %}
+                 {{form}}
+                <button type="submit">Submit</button>
+            </form>
+            <p></p>
+
+        </div>
     </div>
        
 </main>

@@ -1,12 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import bus_stop
 from .models import stop_instance
 import time
 import json
-import plotly.offline as py
-import plotly.graph_objs as go
-from . import by_stop_analysis as bs
-from . import route_analysis as ra
+import by_stop_analysis as bs
+import route_analysis as ra
+from .forms import LocationId
 
 
 def home(request):
@@ -41,8 +40,8 @@ def home(request):
     for stop in total_stop_dict:
         try:
             pct_error_dict[stop] = (
-            round(greaterThan_stop_dict[stop] / total_stop_dict[stop], 3), total_stop_dict[stop],
-            greaterThan_stop_dict[stop])
+                round(greaterThan_stop_dict[stop] / total_stop_dict[stop], 3), total_stop_dict[stop],
+                greaterThan_stop_dict[stop])
         except:
             continue
 
@@ -133,11 +132,23 @@ def routes(request):
 
 
 def single_route(request, route):
+    form = LocationId(request.POST or None)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            location_id = request.POST.get('stop_location_id')
+            coordinates = bs.return_lat_long(int(location_id))
+            lat = str(coordinates[0])
+            lon = str(coordinates[1])
+            url = f'/single_stop/{lat}/{lon}/{location_id}/'
+            return redirect(url)
 
     bar_stops_div = ra.bar_chart_stops_on_route(route)
 
     context = {
-         'bar_stops_div': bar_stops_div
+        'bar_stops_div': bar_stops_div,
+        'form': form,
+
     }
 
     return render(request, "SysMap/single_route.html", context)
