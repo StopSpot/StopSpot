@@ -5,8 +5,8 @@ import time
 import json
 import plotly.offline as py
 import plotly.graph_objs as go
-import by_stop_analysis as bs
-import route_analysis as ra
+from . import by_stop_analysis as bs
+from . import route_analysis as ra
 
 
 def home(request):
