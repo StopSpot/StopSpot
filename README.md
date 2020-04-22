@@ -15,20 +15,20 @@ The StopSpot project is one where we work with data that C-TRAN of Vancouver, Wa
 [Task List](https://docs.google.com/spreadsheets/d/1yQvNPGIrTbJYmvEP3dhnun-5BOvOYidJOPh_eNfEbGQ/edit#gid=0)
 
 ### Roles:
+* Marcus:
+  * Project Founder, Project Manager
+  * Heat map visualizations: research tools and contribute to proof of concept
+  * Manage integration of work into existing Web Application
 * Evan:
   * Data cleaning
   * Data filtration
   * Contribute to visualizations efforts
-* Marcus:
-  * Project Coordinator
-  * Heat map visualizations: research tools and contribute to proof of concept
-  * Manage integration of work into existing web Application
 * Meghan:
   * Time based visualizations effort: researching visualization options and tools
   * Collaboration on proof on concepts for time based visualizations
   * Investigate options for integrating time based visualizations into existing web application, assist with any integration effort
 * Phuong:
-  * Help Marcus with researching on different tools for visualizations of the heat map
+  * Assist Marcus with researching on different tools for visualizations of the heat map
   * Implementing the visualization tools for the heat map feature
   * From the heat map, analyze the clustering of stop instances to perform variance analysis on the stop events
   * Help Meghan with time-based distribution of the problem stops
