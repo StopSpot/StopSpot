@@ -1,5 +1,5 @@
 # CS410/510 Data Analysis Extension for StopSpot Application Developed for C-TRAN
-**Contributors:** Evan Brunswick, Marcus Kwong, Meghan Mueller-Cox, Phuong Pham
+**Contributors:** Marcus Kwong, Evan Brunswick, Meghan Mueller-Cox, Phuong Pham
 
 ## Project Design
 
